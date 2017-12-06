@@ -1,5 +1,5 @@
 {
-  "name": "react-static",
+  "name": "react-static-artnet",
   "version": "4.4.0",
   "main": "lib/index.js",
   "types": "src/index.d.ts",

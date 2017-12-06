@@ -48,8 +48,16 @@ export default function () {
     if (typeof process.env.NODE_ENV === 'undefined') {
       process.env.NODE_ENV = 'production'
     }
+
+    // @artnet grab the slug from `react-static build $slug`
+    // @FIXME make this more customizable, like `react-static build $pageType $slug`
+    // right now it only works for artist slugs
+    const slug = process.argv[3]
+    if (slug) {
+      console.log(`Override Slug: ${slug}`)
+    }
     process.env.REACT_STATIC_ENV = 'production'
-    return require('./build').default()
+    return require('./build').default(slug)
   }
 
   if (cmd === 'create') {

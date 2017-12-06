@@ -5,11 +5,11 @@ import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
-export default async () => {
+export default async overrideSlug => {
   try {
     const config = getConfig()
 
-    // no need to remove the dist dir anymore!
+    // @artnet no need to remove the dist dir anymore!
     // await fs.remove(config.paths.DIST)
 
     console.log('')
@@ -22,7 +22,7 @@ export default async () => {
 
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
-    config.routes = await config.getRoutes({ dev: false })
+    config.routes = await config.getRoutes({ dev: false, overrideSlug })
     await prepareRoutes(config)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
