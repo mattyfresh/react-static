@@ -12,10 +12,17 @@ import { DefaultDocument } from './RootComponents'
 
 // Exporting route HTML and JSON happens here. It's a big one.
 export const exportRoutes = async ({ config }) => {
-  // Use the node version of the app created with webpack
-  const appJsPath = glob.sync(path.resolve(config.paths.DIST, 'app!(.static).*.js'))[0]
+  // @artnet -- if we wanted to move app.js to some other place
+  // (like `static.artnet.com`) we would have to customize this
+  // @FIXME this has to match what is in static.config.js webpack config :(
+  const assetsDir = `${config.paths.DIST}/assets/js`
+  const appJsPath = glob.sync(path.resolve(assetsDir, 'app!(.static).*.js'))[0]
+
+  // @artnet -- this is just the file name, used to dynamically build the URL for app.js
   const appJs = appJsPath.split('/').pop()
-  const appStaticJsPath = glob.sync(path.resolve(config.paths.DIST, 'app.static.*.js'))[0]
+
+  // @artnet -- static JS is for the Server Side build
+  const appStaticJsPath = glob.sync(path.resolve(assetsDir, 'app.static.*.js'))[0]
   const Comp = require(appStaticJsPath).default
 
   const DocumentTemplate = config.Document || DefaultDocument
@@ -126,8 +133,10 @@ export const exportRoutes = async ({ config }) => {
         )
       }
       // Not only do we pass react-helmet attributes and the app.js here, but
-      // we also need to  hard code site props and route props into the page to
+      // we also need to hard code site props and route props into the page to
       // prevent flashing when react mounts onto the HTML.
+
+      // @artnet -- here we can configure the src for the app js file
       const BodyWithMeta = ({ children, ...rest }) => (
         <body {...head.bodyProps} {...rest}>
           {children}
@@ -168,6 +177,8 @@ export const exportRoutes = async ({ config }) => {
 
       // If the route is a 404 page, write it directly to 404.html, instead of
       // inside a directory.
+
+      // @artnet -- we can customize 404 route here (like static.artnet.com/404.html)
       const htmlFilename = route.is404
         ? path.join(config.paths.DIST, '404.html')
         : path.join(config.paths.DIST, route.path, 'index.html')

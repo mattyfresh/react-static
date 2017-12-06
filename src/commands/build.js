@@ -1,4 +1,4 @@
-import fs from 'fs-extra'
+// import fs from 'fs-extra'
 import chalk from 'chalk'
 //
 import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
@@ -8,7 +8,9 @@ import { getConfig, copyPublicFolder } from '../utils'
 export default async () => {
   try {
     const config = getConfig()
-    await fs.remove(config.paths.DIST)
+
+    // no need to remove the dist dir anymore!
+    // await fs.remove(config.paths.DIST)
 
     console.log('')
     console.time('=> Site is ready for production!')
