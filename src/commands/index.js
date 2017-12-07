@@ -1,6 +1,10 @@
 import 'babel-register'
 import chalk from 'chalk'
 import fs from 'fs'
+import { argv } from 'yargs'
+
+// alias for readability
+const yargs = argv
 
 const ignoredExtensions = [
   'css',
@@ -49,15 +53,16 @@ export default function () {
       process.env.NODE_ENV = 'production'
     }
 
-    // @artnet grab the slug from `react-static build $slug`
-    // @FIXME make this more customizable, like `react-static build $pageType $slug`
-    // right now it only works for artist slugs
-    const slug = process.argv[3]
+    // @artnet grab the pagetype and slug from command line args
+    const { pagetype, slug } = yargs
+    if (pagetype) {
+      console.log(chalk.green(`\nBuilding routes for type: ${pagetype}`))
+    }
     if (slug) {
-      console.log(`Override Slug: ${slug}`)
+      console.log(chalk.green(`\nBuilding route with slug: ${slug}`))
     }
     process.env.REACT_STATIC_ENV = 'production'
-    return require('./build').default(slug)
+    return require('./build').default({ pagetype, slug })
   }
 
   if (cmd === 'create') {

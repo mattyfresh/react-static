@@ -116,6 +116,7 @@ export const exportRoutes = async ({ config }) => {
           return true
         })
 
+        // @artnet -- CSS injected here!!
         return (
           <head {...rest}>
             {head.base}

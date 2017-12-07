@@ -5,7 +5,7 @@ import { exportRoutes, buildXMLandRSS, prepareRoutes } from '../static'
 import { buildProductionBundles } from '../webpack'
 import { getConfig, copyPublicFolder } from '../utils'
 
-export default async overrideSlug => {
+export default async ({ pagetype: pageType, slug }) => {
   try {
     const config = getConfig()
 
@@ -22,7 +22,7 @@ export default async overrideSlug => {
 
     console.log('=> Building Routes...')
     console.time(chalk.green('=> [\u2713] Routes Built'))
-    config.routes = await config.getRoutes({ dev: false, overrideSlug })
+    config.routes = await config.getRoutes({ dev: false, pageType, slug })
     await prepareRoutes(config)
     console.timeEnd(chalk.green('=> [\u2713] Routes Built'))
 
